@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="style2.css">
+  <title>Login</title>
+</head>
+<body>
+  <div class="container">
+    <h2 id="form-title">Iniciar Sesión</h2>
+
+    <div class="error" id="error-message"></div>
+
+    <input type="email" id="email" placeholder="Correo electrónico" required />
+    <input type="password" id="password" placeholder="Contraseña" required />
+    
+    <button id="login-btn">Iniciar Sesión</button>
+    <button id="register-btn" style="display: none;">Registrarse</button>
+
+    <div class="toggle" id="toggle-text">¿No tienes cuenta? <strong>Regístrate</strong></div>
+  </div>
+
+  <script>
+    const loginBtn = document.getElementById('login-btn');
+    const registerBtn = document.getElementById('register-btn');
+    const toggleText = document.getElementById('toggle-text');
+    const formTitle = document.getElementById('form-title');
+    const errorMessage = document.getElementById('error-message');
+
+    let isRegistering = false;
+
+    toggleText.addEventListener('click', () => {
+      isRegistering = !isRegistering;
+      if (isRegistering) {
+        formTitle.textContent = 'Crear Cuenta';
+        loginBtn.style.display = 'none';
+        registerBtn.style.display = 'block';
+        toggleText.innerHTML = '¿Ya tienes cuenta? <strong>Inicia Sesión</strong>';
+        errorMessage.textContent = '';
+      } else {
+        formTitle.textContent = 'Iniciar Sesión';
+        loginBtn.style.display = 'block';
+        registerBtn.style.display = 'none';
+        toggleText.innerHTML = '¿No tienes cuenta? <strong>Regístrate</strong>';
+        errorMessage.textContent = '';
+      }
+    });
+
+    registerBtn.addEventListener('click', () => {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!email || !password) {
+        errorMessage.textContent = 'Completa todos los campos.';
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+
+      if (users[email]) {
+        errorMessage.textContent = 'Este correo ya está registrado.';
+        return;
+      }
+
+      users[email] = password;
+      localStorage.setItem('users', JSON.stringify(users));
+      localStorage.setItem('currentUser', email);
+
+      window.location.href = 'home.html';
+    });
+
+    loginBtn.addEventListener('click', () => {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+
+      if (!users[email]) {
+        errorMessage.textContent = 'Usuario no registrado.';
+        return;
+      }
+
+      if (users[email] !== password) {
+        errorMessage.textContent = 'Contraseña incorrecta.';
+        return;
+      }
+
+      localStorage.setItem('currentUser', email);
+      window.location.href = 'home.html';
+    });
+  </script>
+</body>
+</html>

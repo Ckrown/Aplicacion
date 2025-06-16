@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Reserva de Cita - Mascota Feliz</title>
+  <link rel="stylesheet" href="style3.css">
+</head>
+<body>
+  <header>
+    <h1>Mascota Feliz</h1>
+    <nav>
+      <a href="home.html">Inicio</a>
+      <a href="reserva.html" class="activo">Agendar Cita</a>
+      <a href="#" onclick="cerrarSesion()">Cerrar Sesión</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Reserva tu Cita</h2>
+    <form id="formReserva">
+      <label for="nombre">Nombre del Dueño:</label>
+      <input type="text" id="nombre" name="nombre" required>
+
+      <label for="rut">RUT del Dueño (sin guion ni puntos):</label>
+      <input type="text" id="rut" name="rut" placeholder="Ej: 123456785" required>
+
+      <label for="mascota">Nombre de la Mascota:</label>
+      <input type="text" id="mascota" name="mascota" required>
+
+      <label for="tipo">Tipo de Servicio:</label>
+      <select id="tipo" name="tipo" required>
+        <option value="">Seleccionar</option>
+        <option value="Vacunatorio">Vacunatorio</option>
+        <option value="Peluquería">Peluquería</option>
+        <option value="Consulta General">Consulta General</option>
+        <option value="Emergencia">Emergencia</option>
+      </select>
+
+      <label for="fecha">Fecha:</label>
+      <input type="date" id="fecha" name="fecha" required>
+
+      <label for="hora">Hora:</label>
+      <select id="hora" name="hora" required></select>
+
+      <button type="submit">Agendar</button>
+    </form>
+
+    <div id="resumen" style="display: none; padding: 20px; background-color: #e8f6f3; border-radius: 10px; margin-top: 20px;">
+      <h3>Resumen de la Cita</h3>
+      <p id="resumenContenido"></p>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Mascota Feliz - Todos los derechos reservados.
+  </footer>
+
+  <script>
+    function cerrarSesion() {
+      localStorage.removeItem("usuario");
+      window.location.href = "login.html";
+    }
+
+    const horaSelect = document.getElementById("hora");
+    for (let h = 8; h <= 20; h++) {
+      const hora = h.toString().padStart(2, '0') + ":00";
+      const option = document.createElement("option");
+      option.value = hora;
+      option.textContent = hora;
+      horaSelect.appendChild(option);
+    }
+
+    function validarRut(rut) {
+      if (!/^\d{7,8}[0-9kK]$/.test(rut)) return false;
+      const cuerpo = rut.slice(0, -1);
+      const dv = rut.slice(-1).toUpperCase();
+
+      let suma = 0;
+      let multiplo = 2;
+
+      for (let i = cuerpo.length - 1; i >= 0; i--) {
+        suma += parseInt(cuerpo[i]) * multiplo;
+        multiplo = multiplo === 7 ? 2 : multiplo + 1;
+      }
+
+      const dvEsperado = 11 - (suma % 11);
+      const dvReal = dvEsperado === 11 ? '0' : dvEsperado === 10 ? 'K' : dvEsperado.toString();
+
+      return dv === dvReal;
+    }
+
+    function validarFecha(fecha) {
+      const hoy = new Date();
+      hoy.setHours(0, 0, 0, 0);
+      const fechaInput = new Date(fecha);
+      return fechaInput >= hoy;
+    }
+
+    document.getElementById("formReserva").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const nombre = document.getElementById("nombre").value.trim();
+      const rut = document.getElementById("rut").value.trim();
+      const mascota = document.getElementById("mascota").value.trim();
+      const tipo = document.getElementById("tipo").value;
+      const fecha = document.getElementById("fecha").value;
+      const hora = document.getElementById("hora").value;
+
+      if (!nombre || !rut || !mascota || !tipo || !fecha || !hora) {
+        alert("Completa todos los campos.");
+        return;
+      }
+
+      if (!validarRut(rut)) {
+        alert("El RUT ingresado no es válido.");
+        return;
+      }
+
+      if (!validarFecha(fecha)) {
+        alert("La fecha no puede ser anterior al día de hoy.");
+        return;
+      }
+
+      const resumen = `
+        <strong>Dueño:</strong> ${nombre}<br>
+        <strong>RUT:</strong> ${rut}<br>
+        <strong>Mascota:</strong> ${mascota}<br>
+        <strong>Servicio:</strong> ${tipo}<br>
+        <strong>Fecha:</strong> ${fecha}<br>
+        <strong>Hora:</strong> ${hora}
+      `;
+      document.getElementById("resumenContenido").innerHTML = resumen;
+      document.getElementById("resumen").style.display = "block";
+      this.reset();
+    });
+  </script>
+</body>
+</html>

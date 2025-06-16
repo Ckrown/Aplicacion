@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Inicio - Mascota Feliz</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Mascota Feliz</h1>
+    <nav>
+      <a href="home.html" class="activo">Inicio</a>
+      <a href="reserva.html">Agendar Cita</a>
+      <a href="#" onclick="cerrarSesion()">Cerrar Sesión</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2 id="bienvenida"></h2>
+
+    <section class="carrusel">
+      <img src="Imagenes/a1.jpg" alt="Imagen 1" class="activa">
+      <img src="Imagenes/a2.jpeg" alt="Imagen 2">
+      <img src="Imagenes/a3.jpg" alt="Imagen 3">
+    </section>
+
+    <section class="descripcion">
+      <h3>Sobre Nosotros</h3>
+      <p>Al buscar los orígenes de la Medicina Veterinaria en Chile, uno se debe remitirse a la creación del primer centro de enseñanza agrícola del país, el 17 de septiembre de 1842. Fue el primer esbozo de docencia agropecuaria en Chile, y obedecía al interés del gobierno por organizar y encauzar científicamente las actividades del sector agrícola y ganadero nacional.</p>
+
+      <p>En el futuro surgieron las llamadas clínicas veterinarias. Las clínicas veterinarias son un tipo de empresa que surgió como una necesidad de mantener y/o mejorar la salud de animales domésticos, combinando servicios de salud y venta de productos.</p>
+
+      <p>El hospital veterinario <strong>Mascota Feliz</strong> es una veterinaria ubicada en la comuna de San Bernardo, Región Metropolitana. Fundada en los años 90, responde al aumento de mascotas en la comuna. Nuestro equipo es altamente capacitado, con vasta experiencia y calidad humana.</p>
+
+      <p>Servicios destacados: radiografías, vacunatorio, cirugías, laboratorio clínico, hospitalización, peluquería canina y felina, farmacia veterinaria y alimentos. Todo esto disponible también en nuestra plataforma con sistema de reservas online.</p>
+
+      <p>Actualmente buscamos modernizarnos con una <strong>veterinaria móvil</strong>, que incluirá vacunación, peluquería, desparasitación y atención de emergencias a domicilio. Las emergencias complejas serán derivadas a nuestra sucursal.</p>
+    </section>
+
+    <section class="faq">
+      <h3>Preguntas Frecuentes</h3>
+      <ul>
+        <li><strong>¿Puedo llevar a cualquier tipo de mascota?</strong><br>Sí, aunque nos especializamos en perros y gatos, también atendemos otras mascotas domésticas previa consulta.</li>
+        <li><strong>¿Cómo agendo una cita?</strong><br>Desde el botón “Agendar Cita” en esta página, puedes reservar día y hora para tu atención.</li>
+        <li><strong>¿La veterinaria móvil tiene costo adicional?</strong><br>Sí, la atención a domicilio tiene un recargo por desplazamiento. Los precios se informan al agendar.</li>
+        <li><strong>¿Puedo comprar medicamentos directamente?</strong><br>Sí, contamos con farmacia interna. Solo necesitas la receta médica entregada por nuestros veterinarios.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Mascota Feliz - Todos los derechos reservados.</p>
+    <p>📍 Dirección: Av. América 345, San Bernardo, Región Metropolitana, Chile</p>
+    <p>📞 Teléfono: +56 9 8765 4321 | ✉️ contacto@mascotafeliz.cl</p>
+  </footer>
+
+  <script>
+    function cerrarSesion() {
+      localStorage.removeItem("currentUser");
+      window.location.href = "login.html";
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const usuario = localStorage.getItem("currentUser");
+      if (!usuario) {
+        window.location.href = "login.html";
+      } else {
+        const nombreUsuario = usuario.split("@")[0];
+        document.getElementById("bienvenida").textContent = `Bienvenido, ${nombreUsuario}`;
+      }
+    });
+
+    const imagenes = document.querySelectorAll('.carrusel img');
+    let indice = 0;
+
+    setInterval(() => {
+      imagenes[indice].classList.remove('activa');
+      indice = (indice + 1) % imagenes.length;
+      imagenes[indice].classList.add('activa');
+    }, 3000);
+  </script>
+</body>
+</html>

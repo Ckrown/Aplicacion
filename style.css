@@ -4,7 +4,6 @@ body {
   background-color: #f4f4f4;
 }
 
-/* ====== Header y Navegación ====== */
 header {
   background-color: #2ecc71;
   padding: 15px 20px;
@@ -39,7 +38,6 @@ nav a.activo {
   background-color: #27ae60;
 }
 
-/* ====== Bienvenida ====== */
 #bienvenida {
   padding: 20px;
   font-size: 22px;
@@ -47,7 +45,6 @@ nav a.activo {
   font-weight: bold;
 }
 
-/* ====== Carrusel ====== */
 .carrusel {
   position: relative;
   width: 90%;
@@ -71,7 +68,6 @@ nav a.activo {
   display: block;
 }
 
-/* ====== Descripción ====== */
 .descripcion {
   width: 90%;
   max-width: 900px;
@@ -89,7 +85,6 @@ nav a.activo {
   font-size: 24px;
 }
 
-/* ====== Preguntas Frecuentes (FAQ) ====== */
 .faq {
   width: 90%;
   max-width: 900px;
@@ -123,7 +118,6 @@ nav a.activo {
   margin-bottom: 5px;
 }
 
-/* ====== Footer ====== */
 footer {
   background-color: #2ecc71;
   color: white;
